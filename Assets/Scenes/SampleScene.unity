@@ -4776,7 +4776,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputVec: {x: 0, y: 0}
-  speed: 3
+  speed: 5
 --- !u!114 &543386296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4923,6 +4923,7 @@ GameObject:
   - component: {fileID: 623022757}
   - component: {fileID: 623022756}
   - component: {fileID: 623022755}
+  - component: {fileID: 623022760}
   m_Layer: 0
   m_Name: Enemy (1)
   m_TagString: Untagged
@@ -5081,6 +5082,20 @@ Transform:
   - {fileID: 868687334}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &623022760
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 623022754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47d3dc74275ef40f7bbd8570d73fbe54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 2.5
+  target: {fileID: 543386293}
 --- !u!1 &746811152
 GameObject:
   m_ObjectHideFlags: 0
@@ -14107,6 +14122,7 @@ GameObject:
   - component: {fileID: 1807313360}
   - component: {fileID: 1807313361}
   - component: {fileID: 1807313362}
+  - component: {fileID: 1807313364}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -14265,6 +14281,20 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.7, y: 0.9}
   m_Direction: 0
+--- !u!114 &1807313364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1807313357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47d3dc74275ef40f7bbd8570d73fbe54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 2.5
+  target: {fileID: 543386293}
 --- !u!1 &2036502133
 GameObject:
   m_ObjectHideFlags: 0
