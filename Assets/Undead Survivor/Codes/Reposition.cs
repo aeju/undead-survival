@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class Reposition : MonoBehaviour
 {
+    private Collider2D coll; // Collider2D : 기본 도형의 모든 콜라이더2D 포함
+
+    void Awake()
+    {
+        coll = GetComponent<Collider2D>();
+    }
+    
     // 트리거에서 나갔을 때 발생
     void OnTriggerExit2D(Collider2D collision)
     {
@@ -23,9 +30,8 @@ public class Reposition : MonoBehaviour
         // 대각선일 때는, Normalized에 의해 1보다 작은 값이 되어버림
         float dirX = playrDir.x < 0 ? -1 : 1; // 3항 연산자 (조건) ? (true일 때 값) : (false일 때 값)
         float dirY = playrDir.y < 0 ? -1 : 1;
-
-        // switch ~ case : 값의 상태에 따라 로직을 나눠주는 키워드
-        switch (transform.tag)
+        
+        switch (transform.tag) // switch ~ case : 값의 상태에 따라 로직을 나눠주는 키워드
         {
             case "Ground":
                 if (diffX > diffY) // 두 오브젝트의 거리 차이에서, X축이 Y축보다 크면 수평 이동
@@ -38,7 +44,12 @@ public class Reposition : MonoBehaviour
                 }
                 break;
             case "Enemy":
-                
+                if (coll.enabled) // 콜라이더가 활성화 되어있는지 (살아있을 때만)
+                {
+                    // 플레이어의 이동 방향에 따라 맞은 편에서 등장하도록 이동 (카메라가 안 보이는 먼 곳에서 이동시키기 -> 한 맵의 크기만큼) 
+                    transform.Translate(playrDir * 20 
+                                        + new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0f)); // 랜덤한 위치에서 등장하도록 벡터 더하기
+                }
                 break;
         }
     }
