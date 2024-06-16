@@ -39,4 +39,11 @@ public class Enemy : MonoBehaviour
         // 목표의 X축 값과 자신의 X축 값 비교, 작으면 true (자신보다 왼쪽에 있으면 뒤집기)
         spriter.flipX = target.position.x < rigid.position.x;
     }
+
+    // 프리팹은 장면의 오브젝트에 접근 불가능 -> 생성되면서 변수 초기화해주는 방법 사용
+    // OnEnable : 스크립트가 활성화 될 때, 호출되는 이벤트 함수
+    void OnEnable()
+    {
+        target = GameManager.instance.player.GetComponent<Rigidbody2D>();
+    }
 }
