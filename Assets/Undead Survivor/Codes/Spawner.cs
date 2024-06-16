@@ -19,8 +19,6 @@ public class Spawner : MonoBehaviour
     {
         timer += Time.deltaTime; // 타이머 변수 : deltaTime 계속 더하기 
         level = Mathf.FloorToInt(GameManager.instance.gameTime / 10f); // 적절한 숫자로 나눠 시간에 맞춰 레벨이 올라가도록 (Int형으로 변환) 
-        // FloorToInt : 소수점 아래 버리고 Int형으로 변환
-        // CeilToInt : 소수점 아래 올리고 Int형으로 변환
         
         //if (timer > 0.2f) // 타이머가 일정 시간 값에 도달하면 소환
         if (timer > (level == 0 ? 0.5f : 0.2f)) // 레벨을 활용해 소환 타이밍 변경
@@ -44,8 +42,10 @@ public class Spawner : MonoBehaviour
 [System.Serializable] // 직렬화
 public class SpawnData
 {
-    public int spriteType;
     public float spawnTime;
+    
+    // Enemy에서 사용 (몬스터 속성 변경)
+    public int spriteType;
     public int health;
     public float speed;
 }
