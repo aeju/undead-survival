@@ -5,7 +5,8 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     public Transform[] spawnPoint;
-
+    public SpawnData[] SpawnData;
+    
     private int level; // 레벨 
     private float timer;
 
@@ -37,4 +38,14 @@ public class Spawner : MonoBehaviour
         GameObject enemy = GameManager.instance.pool.Get(level); // 풀링에서 가져오는 함수에도 레벨 적용  
         enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position; // 자식 오브젝트에서만 선택되도록, 랜덤 시작 -> 1부터 
     }
+}
+
+// 속성 : 스프라이트 타입, 소환시간, 체력, 속도
+[System.Serializable] // 직렬화
+public class SpawnData
+{
+    public int spriteType;
+    public float spawnTime;
+    public int health;
+    public float speed;
 }
