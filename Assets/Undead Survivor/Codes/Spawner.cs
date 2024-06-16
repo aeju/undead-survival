@@ -6,6 +6,7 @@ public class Spawner : MonoBehaviour
 {
     public Transform[] spawnPoint;
 
+    private int level; // 레벨 
     private float timer;
 
     void Awake()
@@ -16,8 +17,12 @@ public class Spawner : MonoBehaviour
     void Update()
     {
         timer += Time.deltaTime; // 타이머 변수 : deltaTime 계속 더하기 
-
-        if (timer > 0.2f) // 타이머가 일정 시간 값에 도달하면 소환
+        level = Mathf.FloorToInt(GameManager.instance.gameTime / 10f); // 적절한 숫자로 나눠 시간에 맞춰 레벨이 올라가도록 (Int형으로 변환) 
+        // FloorToInt : 소수점 아래 버리고 Int형으로 변환
+        // CeilToInt : 소수점 아래 올리고 Int형으로 변환
+        
+        //if (timer > 0.2f) // 타이머가 일정 시간 값에 도달하면 소환
+        if (timer > (level == 0 ? 0.5f : 0.2f)) // 레벨을 활용해 소환 타이밍 변경
         {
             timer = 0;
             // GameManager.instance.pool.Get(1);
@@ -27,9 +32,9 @@ public class Spawner : MonoBehaviour
 
     void Spawn()
     {
-        //GameManager.instance.pool.Get(Random.Range(0, 2)); 
-        
-        GameObject enemy = GameManager.instance.pool.Get(Random.Range(0, 2)); // 변수에 담는 이유 : 한 번 더 이용할 것이기 때문 (아래줄 -> 만들어둔 소환 위치 중 하나로 배치되도록)
+        // GameManager.instance.pool.Get(Random.Range(0, 2)); 
+        // GameObject enemy = GameManager.instance.pool.Get(Random.Range(0, 2)); // 변수에 담는 이유 : 한 번 더 이용할 것이기 때문 (아래줄 -> 만들어둔 소환 위치 중 하나로 배치되도록)
+        GameObject enemy = GameManager.instance.pool.Get(level); // 풀링에서 가져오는 함수에도 레벨 적용  
         enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position; // 자식 오브젝트에서만 선택되도록, 랜덤 시작 -> 1부터 
     }
 }
