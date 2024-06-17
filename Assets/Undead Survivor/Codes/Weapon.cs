@@ -27,6 +27,21 @@ public class Weapon : MonoBehaviour
             default:
                 break;
         }
+        
+        // .. Test Code ..
+        if (Input.GetButtonDown("Jump"))
+        {
+            LevelUp(20, 5);
+        }
+    }
+
+    public void LevelUp(float damage, int count) // 레벨업 기능
+    {
+        this.damage = damage;
+        this.count += count;
+        
+        if (id == 0)
+            Batch(); // 속성 변경과 동시에, 배치 호출
     }
 
     public void Init() // 무기마다 로직 실행
@@ -46,14 +61,25 @@ public class Weapon : MonoBehaviour
     {
         for (int index = 0; index < count; index++) // for문으로 count만큼 풀링에서 가져오기 
         {
-            Transform bullet = GameManager.instance.pool.Get(prefabId).transform; // 가져온 오브젝트의 Transform을 지역변수로 저장
-            bullet.parent = transform; // 부모 변경 (기존 : 풀매니저)
+            Transform bullet;
+
+            if (index < transform.childCount) // 자식 오브젝트 개수 확인 
+            {
+                bullet = transform.GetChild(index); // index가 아직 childCount 범위 내라면, GetChild 함수로 가져오기 
+            }
+            else
+            {
+                bullet = GameManager.instance.pool.Get(prefabId).transform; // 기존 오브젝트 먼저 활용하고, 모자란 것은 풀링에서 가져오기 
+                bullet.parent = transform; // 부모 변경 (기존 : 풀매니저)
+            }
+            
+            // 위치, 회전 초기화 
+            bullet.localPosition = Vector3.zero; 
+            bullet.localRotation = Quaternion.identity;
 
             Vector3 rotVec = Vector3.forward * 360 * index / count; // z축 방향 
             bullet.Rotate(rotVec); // 계산된 각도 적용 (회전)
-            
             bullet.Translate(bullet.up * 1.5f, Space.World); // 자신의 위쪽으로 이동, 이동 방향 : Space.World 기준
-            
             bullet.GetComponent<Bullet>().Init(damage, -1); // -1 is Infinity Per. (무한으로 관통) 
         }
     }
