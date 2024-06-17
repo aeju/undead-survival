@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditorInternal;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
@@ -12,6 +11,14 @@ public class Weapon : MonoBehaviour
     public int count;
     public float speed;
 
+    private float timer;
+    private Player player;
+
+    void Awake()
+    {
+        player = GetComponentInParent<Player>(); // 부모의 컴포넌트 가져오기 (nearestTarget : Scanner에게 있음!) 
+    }
+    
     void Start()
     {
         Init();
@@ -25,6 +32,13 @@ public class Weapon : MonoBehaviour
                 transform.Rotate(Vector3.back * speed * Time.deltaTime); // z축 회전
                 break;
             default:
+                timer += Time.deltaTime; // 빼먹음 -> 생성되지 않음 
+                
+                if (timer > speed) // speed보다 커지면 
+                {
+                    timer = 0f; // 1) 초기화
+                    Fire(); // 2) 발사 
+                }
                 break;
         }
         
@@ -53,6 +67,7 @@ public class Weapon : MonoBehaviour
                 Batch(); 
                 break;
             default:
+                speed = 0.3f; // 연사 속도 (적을 수록 많이 발사)
                 break;
         }
     }
@@ -82,5 +97,14 @@ public class Weapon : MonoBehaviour
             bullet.Translate(bullet.up * 1.5f, Space.World); // 자신의 위쪽으로 이동, 이동 방향 : Space.World 기준
             bullet.GetComponent<Bullet>().Init(damage, -1); // -1 is Infinity Per. (무한으로 관통) 
         }
+    }
+
+    void Fire()
+    {
+        if (!player.scanner.nearestTarget) // 저장된 목표가 없으면 넘어가는 조건 로직 
+            return;
+        
+        Transform bullet = GameManager.instance.pool.Get(prefabId).transform; // 생성 : 불렛 0과 동일
+        bullet.position = transform.position; // 위치 : 플레이어 위치
     }
 }
