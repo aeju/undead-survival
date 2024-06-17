@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem.Processors;
 
 public class Enemy : MonoBehaviour
 {
@@ -60,5 +61,29 @@ public class Enemy : MonoBehaviour
         speed = data.speed;
         maxHealth = data.health;
         health = data.health;
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!collision.CompareTag("Bullet")) // 무기랑 충돌할 때만, 로직 실행
+            return;
+
+        health -= collision.GetComponent<Bullet>().damage; // Bullet 컴포넌트로 접근하여 데미지를 가져와 피격 계산
+
+        // 로직 분리 조건 : 남은 체력 
+        if (health > 0) // 피격
+        {
+            // .. Live, Hit Action
+        }
+        else // 사망
+        {
+            // .. Die
+            Dead();    
+        }
+    }
+
+    void Dead()
+    {
+        gameObject.SetActive(false); // 오브젝트 비활성화
     }
 }
