@@ -22,8 +22,7 @@ public class Weapon : MonoBehaviour
         switch (id) 
         {
             case 0:
-                //transform.Rotate(Vector3.forward * speed * Time.deltaTime); // z축 회전
-                transform.Rotate(Vector3.back * speed * Time.deltaTime); 
+                transform.Rotate(Vector3.back * speed * Time.deltaTime); // z축 회전
                 break;
             default:
                 break;
@@ -35,7 +34,7 @@ public class Weapon : MonoBehaviour
         switch (id) 
         {
             case 0:
-                speed = - 150; // - : 반시계 방향
+                speed = 150; // - : 반시계 방향
                 Batch(); 
                 break;
             default:
@@ -49,6 +48,12 @@ public class Weapon : MonoBehaviour
         {
             Transform bullet = GameManager.instance.pool.Get(prefabId).transform; // 가져온 오브젝트의 Transform을 지역변수로 저장
             bullet.parent = transform; // 부모 변경 (기존 : 풀매니저)
+
+            Vector3 rotVec = Vector3.forward * 360 * index / count; // z축 방향 
+            bullet.Rotate(rotVec); // 계산된 각도 적용 (회전)
+            
+            bullet.Translate(bullet.up * 1.5f, Space.World); // 자신의 위쪽으로 이동, 이동 방향 : Space.World 기준
+            
             bullet.GetComponent<Bullet>().Init(damage, -1); // -1 is Infinity Per. (무한으로 관통) 
         }
     }
