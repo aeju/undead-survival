@@ -15,6 +15,7 @@ public class Enemy : MonoBehaviour
     private bool isLive; // 생존 여부
 
     private Rigidbody2D rigid;
+    private Collider2D coll;
     private Animator anim;
     private SpriteRenderer spriter;
     private WaitForFixedUpdate wait;
@@ -23,6 +24,7 @@ public class Enemy : MonoBehaviour
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
+        coll = GetComponent<Collider2D>(); // 빼먹었더니, coll.enabled = true; 가 실행되지 않음 ㅠ 
         anim = GetComponent<Animator>();
         spriter = GetComponent<SpriteRenderer>();
         wait = new WaitForFixedUpdate();
@@ -56,6 +58,11 @@ public class Enemy : MonoBehaviour
     {
         target = GameManager.instance.player.GetComponent<Rigidbody2D>();
         isLive = true;
+        // 재활용 -> 되돌리기 
+        coll.enabled = true;
+        rigid.simulated = true;
+        spriter.sortingOrder = 2;
+        anim.SetBool("Dead", false);
         health = maxHealth;
     }
 
@@ -85,8 +92,13 @@ public class Enemy : MonoBehaviour
         }
         else // 사망
         {
-            // .. Die
-            Dead();     
+            isLive = false;
+            coll.enabled = false;
+            rigid.simulated = false;
+            spriter.sortingOrder = 1;
+            anim.SetBool("Dead", true);
+            Debug.Log("dead");
+            // Dead(); 애니메이션 이벤트에서 실행      
         }
     }
 
