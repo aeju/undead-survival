@@ -45,7 +45,7 @@ public class Weapon : MonoBehaviour
         // .. Test Code ..
         if (Input.GetButtonDown("Jump"))
         {
-            LevelUp(20, 5);
+            LevelUp(10, 5);
         }
     }
 
@@ -95,16 +95,25 @@ public class Weapon : MonoBehaviour
             Vector3 rotVec = Vector3.forward * 360 * index / count; // z축 방향 
             bullet.Rotate(rotVec); // 계산된 각도 적용 (회전)
             bullet.Translate(bullet.up * 1.5f, Space.World); // 자신의 위쪽으로 이동, 이동 방향 : Space.World 기준
-            bullet.GetComponent<Bullet>().Init(damage, -1); // -1 is Infinity Per. (무한으로 관통) 
+            
+            //bullet.GetComponent<Bullet>().Init(damage, -1); // -1 is Infinity Per. (무한으로 관통) 
+            bullet.GetComponent<Bullet>().Init(damage, -1, Vector3.zero); // 근접 공격에 사용했던 초기화 함수 호출 수정 
         }
     }
-
+ 
     void Fire()
     {
         if (!player.scanner.nearestTarget) // 저장된 목표가 없으면 넘어가는 조건 로직 
             return;
         
+        // 총알 나아가고자 하는 방향 계산
+        Vector3 targetPos = player.scanner.nearestTarget.position; // 위치
+        Vector3 dir = targetPos - transform.position; // 방향 (크기가 포함된 방향 : 목표 위치 - 나의 위치)
+        dir = dir.normalized; // normalized : 현재 벡터의 방향은 유지하고 크기가 1로 변환된 속성 
+        
         Transform bullet = GameManager.instance.pool.Get(prefabId).transform; // 생성 : 불렛 0과 동일
         bullet.position = transform.position; // 위치 : 플레이어 위치
+        bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir); // 회전 (FromToRotation : 지정된 축을 중심으로 목표를 향해 회전)
+        bullet.GetComponent<Bullet>().Init(damage, count, dir); // 원거리 공격 초기화 함수 호출 (관통력, dir)
     }
 }
