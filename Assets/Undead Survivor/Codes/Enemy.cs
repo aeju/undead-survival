@@ -17,18 +17,22 @@ public class Enemy : MonoBehaviour
     private Rigidbody2D rigid;
     private Animator anim;
     private SpriteRenderer spriter;
+    private WaitForFixedUpdate wait;
+    
 
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         spriter = GetComponent<SpriteRenderer>();
+        wait = new WaitForFixedUpdate();
     }
 
     // 물리적 이동 : 몬스터가 살아있는 동안에만 
     void FixedUpdate()
     {
-        if (!isLive)
+        // if (!isLive) 
+        if (!isLive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit")) // Hit 애니메이션 동안 멈추기
             return;
         
         Vector2 dirVec = target.position - rigid.position; // 위치 차이 = 타겟 위치 - 나의 위치, 방향 = 위치 차이의 정규화 (Normalized)
@@ -69,19 +73,34 @@ public class Enemy : MonoBehaviour
             return;
 
         health -= collision.GetComponent<Bullet>().damage; // Bullet 컴포넌트로 접근하여 데미지를 가져와 피격 계산
+        
+        // 실행 x : KnockBack(); 
+        StartCoroutine(KnockBack()); // 동일 : StartCoroutine("KnockBack"); 
+        
 
         // 로직 분리 조건 : 남은 체력 
         if (health > 0) // 피격
         {
-            // .. Live, Hit Action
+            anim.SetTrigger("Hit");
         }
         else // 사망
         {
             // .. Die
-            Dead();    
+            Dead();     
         }
     }
 
+    IEnumerator KnockBack()
+    {
+        // 동일 : yield return null; // 1프레임 쉬기 
+        yield return wait; // 하나의 물리 프레임 딜레이 
+        
+        // 플레이어 위치, 나의 위치 
+        Vector3 playerPos = GameManager.instance.player.transform.position;
+        Vector3 dirVec = transform.position - playerPos; // 플레이어 기준의 반대 방향 : 현재 위치 - 플레이어 위치 
+        rigid.AddForce(dirVec.normalized * 3, ForceMode2D.Impulse); // dirVec(크기 포함).normalized = 크기 1 (=방향만 가진 벡터)
+    }
+    
     void Dead()
     {
         gameObject.SetActive(false); // 오브젝트 비활성화
