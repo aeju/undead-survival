@@ -26,10 +26,10 @@ public class HUD : MonoBehaviour
                 mySlider.value = curExp / maxExp; // 슬라이더 : 현재 경험치 / 최대 경험치 
                 break;
             case InfoType.Level:
-                
+                myText.text = string.Format("Lv.{0:F0}", GameManager.instance.level);
                 break;
             case InfoType.Kill:
-                
+                myText.text = string.Format("{0:F0}", GameManager.instance.kill);
                 break;
             case InfoType.Time:
                 
