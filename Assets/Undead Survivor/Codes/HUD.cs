@@ -39,7 +39,9 @@ public class HUD : MonoBehaviour
                 myText.text = string.Format("{0:D2}:{1:D2}", min, sec); // 00:07 (항상 두 자리) D0, D1 ... : 자리수 지정
                 break;
             case InfoType.Health:
-                
+                float curHealth = GameManager.instance.health;
+                float maxHealth = GameManager.instance.maxHealth;
+                mySlider.value = curHealth / maxHealth; // 슬라이더 : 현재 경험치 / 최대 경험치 
                 break;
         }
     }

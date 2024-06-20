@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,8 @@ public class GameManager : MonoBehaviour
     public float maxGameTime = 2 * 10f; // 최대 게임 시간
     
     [Header("# Player Info")]
+    public int health;
+    public int maxHealth = 100;
     public int level; // 레벨
     public int kill; // 킬수
     public int exp; // 경험치
@@ -23,6 +26,11 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         instance = this; // 자기자신 집어 넣음
+    }
+
+    private void Start()
+    {
+        health = maxHealth;
     }
 
     void Update()
