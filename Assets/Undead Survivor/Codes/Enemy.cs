@@ -76,7 +76,7 @@ public class Enemy : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Bullet")) // 무기랑 충돌할 때만, 로직 실행
+        if (!collision.CompareTag("Bullet") || !isLive) // 무기랑 충돌할 때만, 살아있을 때만 (사망 로직 연속 실행 방지)
             return;
 
         health -= collision.GetComponent<Bullet>().damage; // Bullet 컴포넌트로 접근하여 데미지를 가져와 피격 계산
@@ -97,7 +97,8 @@ public class Enemy : MonoBehaviour
             rigid.simulated = false;
             spriter.sortingOrder = 1;
             anim.SetBool("Dead", true);
-            Debug.Log("dead");
+            GameManager.instance.kill++; // 킬수 증가
+            GameManager.instance.GetExp(); // 경험치 함수 호출
             // Dead(); 애니메이션 이벤트에서 실행      
         }
     }

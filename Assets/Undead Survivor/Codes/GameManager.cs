@@ -5,10 +5,18 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance; // 정적으로 사용하겠다는 키워드, 바로 메모리에 얹음 (= 즉시 클래스에서 부를 수 있음)
-
+    
+    [Header("# Game Control")]
     public float gameTime; // 게임 시간
     public float maxGameTime = 2 * 10f; // 최대 게임 시간
     
+    [Header("# Player Info")]
+    public int level; // 레벨
+    public int kill; // 킬수
+    public int exp; // 경험치
+    public int[] nextExp = { 3, 5, 10, 30, 60, 100, 150, 210, 280, 360, 450, 600 }; // 각 레벨의 필요경험치 보관 배열
+    
+    [Header("# Game Object")]
     public PoolManager pool;
     public Player player;
 
@@ -24,6 +32,17 @@ public class GameManager : MonoBehaviour
         if (gameTime > maxGameTime)
         {
             gameTime = 0;
+        }
+    }
+
+    public void GetExp()
+    {
+        exp++;
+
+        if (exp == nextExp[level]) // 레벨 업 : 필요 경험치에 도달하면
+        {
+            level++;
+            exp = 0;
         }
     }
 }
