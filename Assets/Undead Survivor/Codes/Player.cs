@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
     public Vector2 inputVec;
     public float speed = 3;
     public Scanner scanner;
+    public Hand[] hands;
 
     private Rigidbody2D rigid;
     private SpriteRenderer spriter;
@@ -19,6 +20,7 @@ public class Player : MonoBehaviour
         spriter = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         scanner = GetComponent<Scanner>();
+        hands = GetComponentsInChildren<Hand>(true);
     }
 
     void FixedUpdate() // 물리 연산 프레임마다 호출 (위치 이동, 다른 프레임 환경에서도 이동 거리 같도록)
