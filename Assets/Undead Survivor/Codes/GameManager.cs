@@ -22,7 +22,8 @@ public class GameManager : MonoBehaviour
     [Header("# Game Object")]
     public PoolManager pool;
     public Player player;
-
+    public LevelUp uiLevelUp; 
+    
     void Awake()
     {
         instance = this; // 자기자신 집어 넣음
@@ -51,6 +52,7 @@ public class GameManager : MonoBehaviour
         {
             level++;
             exp = 0;
+            uiLevelUp.Show(); // 아이템 창 보여주기 
         }
     }
 }
