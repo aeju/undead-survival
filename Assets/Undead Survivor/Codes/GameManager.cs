@@ -32,6 +32,9 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         health = maxHealth;
+        
+        // 임시 스크립트 (첫번째 캐릭터 선택)
+        uiLevelUp.Select(0);
     }
 
     void Update()
