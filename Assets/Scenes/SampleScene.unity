@@ -5562,6 +5562,7 @@ GameObject:
   m_Component:
   - component: {fileID: 486418302}
   - component: {fileID: 486418303}
+  - component: {fileID: 486418304}
   m_Layer: 0
   m_Name: Hand Left
   m_TagString: Untagged
@@ -5636,6 +5637,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &486418304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 486418301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51948bcd683074774bd0b4911730872a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isLeft: 1
+  spriter: {fileID: 486418303}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -7281,6 +7296,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1243307386}
   - component: {fileID: 1243307387}
+  - component: {fileID: 1243307388}
   m_Layer: 0
   m_Name: Hand Right
   m_TagString: Untagged
@@ -7355,6 +7371,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1243307388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1243307385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51948bcd683074774bd0b4911730872a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isLeft: 0
+  spriter: {fileID: 1243307387}
 --- !u!1 &1266283605
 GameObject:
   m_ObjectHideFlags: 0
