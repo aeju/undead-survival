@@ -20,13 +20,6 @@ public class Weapon : MonoBehaviour
         player = GameManager.instance.player;
     }
     
-    /*
-    void Start()
-    {
-        Init();
-    }
-    */
-    
     void Update() // 무기마다 로직 실행
     {
         switch (id) 
@@ -59,6 +52,8 @@ public class Weapon : MonoBehaviour
         
         if (id == 0)
             Batch(); // 속성 변경과 동시에, 배치 호출
+        
+        player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver); // 레벨업에 대한 기어 데미지도 올려달라 
     }
 
     public void Init(ItemData data) // 무기마다 로직 실행
@@ -93,6 +88,8 @@ public class Weapon : MonoBehaviour
                 speed = 0.3f; // 연사 속도 (적을 수록 많이 발사)
                 break;
         }
+        
+        player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver); // 특정 함수 호출을 모든 자식에게 방송, 두 번째 인자 - 꼭 리시버가 필요하진 않다 
     }
 
     void Batch() // count 수마다 배치 
@@ -119,7 +116,6 @@ public class Weapon : MonoBehaviour
             bullet.Rotate(rotVec); // 계산된 각도 적용 (회전)
             bullet.Translate(bullet.up * 1.5f, Space.World); // 자신의 위쪽으로 이동, 이동 방향 : Space.World 기준
             
-            //bullet.GetComponent<Bullet>().Init(damage, -1); // -1 is Infinity Per. (무한으로 관통) 
             bullet.GetComponent<Bullet>().Init(damage, -1, Vector3.zero); // 근접 공격에 사용했던 초기화 함수 호출 수정 
         }
     }
