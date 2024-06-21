@@ -22,6 +22,9 @@ public class Weapon : MonoBehaviour
     
     void Update() // 무기마다 로직 실행
     {
+        if (!GameManager.instance.isLive)
+            return;
+        
         switch (id) 
         {
             case 0:

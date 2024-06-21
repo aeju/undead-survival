@@ -33,7 +33,9 @@ public class Enemy : MonoBehaviour
     // 물리적 이동 : 몬스터가 살아있는 동안에만 
     void FixedUpdate()
     {
-        // if (!isLive) 
+        if (!GameManager.instance.isLive)
+            return;
+        
         if (!isLive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit")) // Hit 애니메이션 동안 멈추기
             return;
         
@@ -45,6 +47,9 @@ public class Enemy : MonoBehaviour
 
     void LateUpdate()
     {
+        if (!GameManager.instance.isLive)
+            return;
+        
         if (!isLive)
             return;
         

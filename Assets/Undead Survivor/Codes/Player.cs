@@ -25,6 +25,9 @@ public class Player : MonoBehaviour
 
     void FixedUpdate() // 물리 연산 프레임마다 호출 (위치 이동, 다른 프레임 환경에서도 이동 거리 같도록)
     {
+        if (!GameManager.instance.isLive)
+            return;
+        
         // 이미 InputSystem에서 normalize 해줘서, 해줄 필요 x
         Vector2 nextVec = inputVec * speed * Time.fixedDeltaTime; // fixedDeltaTime : 물리 프레임 하나 소비 시간 
         rigid.MovePosition(rigid.position + nextVec); // 위치 이동 -> 현재 위치도 더해줘야 (nextVec = 방향)
@@ -37,6 +40,9 @@ public class Player : MonoBehaviour
 
     void LateUpdate() // 다음 프레임으로 넘어가기 직전에 실행
     {
+        if (!GameManager.instance.isLive)
+            return;
+        
         anim.SetFloat("Speed", inputVec.magnitude); // magnitude : 벡터의 순수한 크기 값
         
         if (inputVec.x != 0)

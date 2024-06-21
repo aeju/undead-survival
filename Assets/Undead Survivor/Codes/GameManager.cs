@@ -6,8 +6,9 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance; // 정적으로 사용하겠다는 키워드, 바로 메모리에 얹음 (= 즉시 클래스에서 부를 수 있음)
-    
-    [Header("# Game Control")]
+
+    [Header("# Game Control")] 
+    public bool isLive;
     public float gameTime; // 게임 시간
     public float maxGameTime = 2 * 10f; // 최대 게임 시간
     
@@ -39,6 +40,9 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        if (!isLive)
+            return;
+        
         gameTime += Time.deltaTime;
 
         if (gameTime > maxGameTime)
@@ -57,5 +61,17 @@ public class GameManager : MonoBehaviour
             exp = 0;
             uiLevelUp.Show(); // 아이템 창 보여주기 
         }
+    }
+
+    public void Stop() // 시간 정지
+    {
+        isLive = false;
+        Time.timeScale = 0; // 시간속도, 멈춤
+    }
+    
+    public void Resume() // 작동 
+    {
+        isLive = false;
+        Time.timeScale = 1; // 재생
     }
 }
