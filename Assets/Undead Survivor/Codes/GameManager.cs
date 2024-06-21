@@ -55,7 +55,9 @@ public class GameManager : MonoBehaviour
     {
         exp++;
 
-        if (exp == nextExp[level]) // 레벨 업 : 필요 경험치에 도달하면
+        // 필요 경험치에 도달 -> 레벨 업 
+        // if (exp == nextExp[level]) 
+        if (exp == nextExp[Mathf.Min(level, nextExp.Length - 1)]) // 최고 경험치 그대로 사용하도록 
         {
             level++;
             exp = 0;
@@ -71,7 +73,7 @@ public class GameManager : MonoBehaviour
     
     public void Resume() // 작동 
     {
-        isLive = false;
-        Time.timeScale = 1; // 재생
+        isLive = true;
+        Time.timeScale = 1; // 재생 
     }
 }
