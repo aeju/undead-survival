@@ -33,7 +33,23 @@ public class Item : MonoBehaviour
         {
             case ItemData.ItemType.Melle: // 여러 개의 case 붙여서 로직 실행 가능
             case ItemData.ItemType.Range:
-                
+                if (level == 0)
+                {
+                    GameObject newWeapon = new GameObject();
+                    weapon = newWeapon.AddComponent<Weapon>();
+                    // weapon.Init();
+                    weapon.Init(data); // 스크립터블 오브젝트 - 매개변수로 받아 활용
+                }
+                else // 처음 이후의 레벨업 : 데미지, 횟수 계산
+                {
+                    float nextDamage = data.baseDamage;
+                    int nextCount = 0;
+
+                    nextDamage += data.baseDamage * data.damages[level];
+                    nextCount += data.counts[level];
+                    
+                    weapon.LevelUp(nextDamage, nextCount);
+                }
                 break;
             case ItemData.ItemType.Glove:
                 

@@ -16,13 +16,16 @@ public class Weapon : MonoBehaviour
 
     void Awake()
     {
-        player = GetComponentInParent<Player>(); // 부모의 컴포넌트 가져오기 (nearestTarget : Scanner에게 있음!) 
+        // player = GetComponentInParent<Player>(); // 부모의 컴포넌트 가져오기 (nearestTarget : Scanner에게 있음!) 
+        player = GameManager.instance.player;
     }
     
+    /*
     void Start()
     {
         Init();
     }
+    */
     
     void Update() // 무기마다 로직 실행
     {
@@ -58,8 +61,28 @@ public class Weapon : MonoBehaviour
             Batch(); // 속성 변경과 동시에, 배치 호출
     }
 
-    public void Init() // 무기마다 로직 실행
+    public void Init(ItemData data) // 무기마다 로직 실행
     {
+        // Basic Set
+        name = "Weapon " + data.itemId;
+        transform.parent = player.transform; // 부모 오브젝트 : 플레이어로 지정
+        transform.localPosition = Vector3.zero; // local Position(지역 위치) : 원점 
+        
+        // Property Set (각종 무기 속성 변수 : 스크립터블 오브젝트 데이터로 초기화)
+        id = data.itemId;
+        damage = data.baseDamage;
+        count = data.baseCount;
+
+        // 데이터 : 프리팹(인덱스 x) -> prefabId : 풀링 매니저 변수에서 찾아서 초기화
+        for (int index = 0; index < GameManager.instance.pool.prefabs.Length; index++)
+        {
+            if (data.projectile == GameManager.instance.pool.prefabs[index])
+            {
+                prefabId = index; 
+                break;
+            }
+        }
+        
         switch (id) 
         {
             case 0:
