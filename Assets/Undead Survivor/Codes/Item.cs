@@ -12,7 +12,9 @@ public class Item : MonoBehaviour
     public Gear gear;
 
     private Image icon;
-    private Text textlevel;
+    private Text textLevel; // 레벨
+    private Text textName; // 이름
+    private Text textDesc; // 설명
 
     private void Awake()
     {
@@ -20,19 +22,44 @@ public class Item : MonoBehaviour
         icon.sprite = data.itemIcon;
 
         Text[] texts = GetComponentsInChildren<Text>();
-        textlevel = texts[0];
+        textLevel = texts[0];
+        textName = texts[1];
+        textDesc = texts[2];
+        textName.text = data.itemName; // 처음에 넣어주고, 수정 x 
+    } 
+
+    private void OnEnable()
+    {
+        textLevel.text = "Lv." + (level + 1); // 레벨 텍스트 갱신
+
+        switch (data.itemType) // 아이템 타입에 따라 로직 분리 (무기 : 설명 2줄)
+        {
+            case ItemData.ItemType.Melee:
+            case ItemData.ItemType.Range:
+                textDesc.text = string.Format(data.itemDesc, data.damages[level] * 100, data.counts[level]); // 데미지 % 상승 보여줄 땐, 100 곱하기 
+                break;
+            case ItemData.ItemType.Glove:
+            case ItemData.ItemType.Shoe:
+                textDesc.text = string.Format(data.itemDesc, data.damages[level] * 100);
+                break;
+            default:
+                textDesc.text = string.Format(data.itemDesc);
+                break;
+        }
     }
 
+    /*
     private void LateUpdate()
     {
-        textlevel.text = "Lv." + (level + 1); // 레벨 텍스트 갱신
+        textLevel.text = "Lv." + (level + 1); // 레벨 텍스트 갱신
     }
+    */
 
     public void OnClick()
     {
         switch (data.itemType)
         {
-            case ItemData.ItemType.Melle: // 여러 개의 case 붙여서 로직 실행 가능
+            case ItemData.ItemType.Melee: // 여러 개의 case 붙여서 로직 실행 가능
             case ItemData.ItemType.Range:
                 if (level == 0) // 최초 레벨업 : 게임 오브젝트 생성 
                 {
