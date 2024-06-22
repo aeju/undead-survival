@@ -25,7 +25,9 @@ public class GameManager : MonoBehaviour
     public PoolManager pool;
     public Player player;
     public LevelUp uiLevelUp;
-    public GameObject uiResult;
+    // public GameObject uiResult;
+    public Result uiResult;
+    public GameObject enemyCleaner;
     
     void Awake()
     {
@@ -36,22 +38,42 @@ public class GameManager : MonoBehaviour
     {
         health = maxHealth;
         uiLevelUp.Select(0); // 임시 스크립트 (첫번째 캐릭터 선택)
-        isLive = true;
+        // isLive = true;
+        Resume(); 
     }
 
     public void GameOver()
     {
-        // Stop(); // 묘비로 변하기 전, 멈춤 -> 약간의 딜레이 필요 (코루틴 사용)
-        StartCoroutine(GameOverRoutine());
+        StartCoroutine(GameOverRoutine()); 
     }
 
     IEnumerator GameOverRoutine()
     {
         isLive = false;
         
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.5f); // 딜레이 필요 (플레이어 - 죽음 애니메이션)
         
-        uiResult.SetActive(true);
+        // uiResult.SetActive(true);
+        uiResult.gameObject.SetActive(true);
+        uiResult.Lose();
+        Stop();
+    }
+    
+    public void GameVictory()
+    {
+        StartCoroutine(GameVictoryRoutine()); 
+    }
+
+    IEnumerator GameVictoryRoutine()
+    {
+        isLive = false;
+        enemyCleaner.SetActive(true); // 적 클리너 활성화
+        
+        yield return new WaitForSeconds(0.5f); // 딜레이 필요 (몬스터 - 죽음 애니메이션)
+        
+        // uiResult.SetActive(true);
+        uiResult.gameObject.SetActive(true);
+        uiResult.Win();
         Stop();
     }
     
@@ -70,11 +92,15 @@ public class GameManager : MonoBehaviour
         if (gameTime > maxGameTime)
         {
             gameTime = 0;
+            GameVictory(); // 승리 : 게임 시간이 최대 시간 넘기는 때 
         }
     }
 
     public void GetExp()
     {
+        if (!isLive)
+            return;
+        
         exp++;
 
         // 필요 경험치에 도달 -> 레벨 업 
