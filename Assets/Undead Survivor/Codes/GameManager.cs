@@ -30,12 +30,11 @@ public class GameManager : MonoBehaviour
         instance = this; // 자기자신 집어 넣음
     }
 
-    private void Start()
+    public void GameStart() // 게임 시작 버튼에 연결
     {
         health = maxHealth;
-        
-        // 임시 스크립트 (첫번째 캐릭터 선택)
-        uiLevelUp.Select(0);
+        uiLevelUp.Select(0); // 임시 스크립트 (첫번째 캐릭터 선택)
+        isLive = true;
     }
 
     void Update()
