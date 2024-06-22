@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,9 +14,7 @@ public class GameManager : MonoBehaviour
     public float maxGameTime = 2 * 10f; // 최대 게임 시간
     
     [Header("# Player Info")]
-    // public int health;
     public float health;
-    // public int maxHealth = 100;
     public float maxHealth = 100;
     public int level; // 레벨
     public int kill; // 킬수
@@ -25,7 +24,8 @@ public class GameManager : MonoBehaviour
     [Header("# Game Object")]
     public PoolManager pool;
     public Player player;
-    public LevelUp uiLevelUp; 
+    public LevelUp uiLevelUp;
+    public GameObject uiResult;
     
     void Awake()
     {
@@ -37,6 +37,27 @@ public class GameManager : MonoBehaviour
         health = maxHealth;
         uiLevelUp.Select(0); // 임시 스크립트 (첫번째 캐릭터 선택)
         isLive = true;
+    }
+
+    public void GameOver()
+    {
+        // Stop(); // 묘비로 변하기 전, 멈춤 -> 약간의 딜레이 필요 (코루틴 사용)
+        StartCoroutine(GameOverRoutine());
+    }
+
+    IEnumerator GameOverRoutine()
+    {
+        isLive = false;
+        
+        yield return new WaitForSeconds(0.5f);
+        
+        uiResult.SetActive(true);
+        Stop();
+    }
+    
+    public void GameRetry()
+    {
+        SceneManager.LoadScene(0);
     }
 
     void Update()
