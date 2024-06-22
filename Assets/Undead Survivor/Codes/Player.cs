@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class Player : MonoBehaviour
     public float speed = 3;
     public Scanner scanner;
     public Hand[] hands;
+    public RuntimeAnimatorController[] animCon;
 
     private Rigidbody2D rigid;
     private SpriteRenderer spriter;
@@ -21,6 +23,11 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
         scanner = GetComponent<Scanner>();
         hands = GetComponentsInChildren<Hand>(true);
+    }
+
+    private void OnEnable()
+    {
+        anim.runtimeAnimatorController = animCon[GameManager.instance.playerId];
     }
 
     void FixedUpdate() // 물리 연산 프레임마다 호출 (위치 이동, 다른 프레임 환경에서도 이동 거리 같도록)

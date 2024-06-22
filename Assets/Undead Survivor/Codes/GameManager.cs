@@ -12,8 +12,9 @@ public class GameManager : MonoBehaviour
     public bool isLive;
     public float gameTime; // 게임 시간
     public float maxGameTime = 2 * 10f; // 최대 게임 시간
-    
-    [Header("# Player Info")]
+
+    [Header("# Player Info")] 
+    public int playerId; // 캐릭터 ID
     public float health;
     public float maxHealth = 100;
     public int level; // 레벨
@@ -25,7 +26,6 @@ public class GameManager : MonoBehaviour
     public PoolManager pool;
     public Player player;
     public LevelUp uiLevelUp;
-    // public GameObject uiResult;
     public Result uiResult;
     public GameObject enemyCleaner;
     
@@ -34,11 +34,15 @@ public class GameManager : MonoBehaviour
         instance = this; // 자기자신 집어 넣음
     }
 
-    public void GameStart() // 게임 시작 버튼에 연결
+    // public void GameStart() // 게임 시작 버튼에 연결
+    public void GameStart(int id) // 게임 시작 버튼에 연결
     {
+        playerId = id;
         health = maxHealth;
-        uiLevelUp.Select(0); // 임시 스크립트 (첫번째 캐릭터 선택)
-        // isLive = true;
+        
+        player.gameObject.SetActive(true); // 플레이어 게임 오브젝트 활성화 
+        // uiLevelUp.Select(0); // 임시 스크립트 (첫번째 캐릭터 선택)
+        uiLevelUp.Select(playerId % 2); 
         Resume(); 
     }
 
