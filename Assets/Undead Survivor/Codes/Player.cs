@@ -50,4 +50,22 @@ public class Player : MonoBehaviour
             spriter.flipX = inputVec.x < 0; // 비교 연산자 결과 바로 넣기 (좌측키 = 마이너스 = 왼쪽)
         }
     }
+
+    void OnCollisionStay2D(Collision2D collsion) // 충돌 -> 체력 감소 (업데이트 느낌)
+    {
+        if (!GameManager.instance.isLive)
+            return;
+
+        GameManager.instance.health -= Time.deltaTime * 10; // 프레임 당 10씩 감소 -> 너무 빨리 죽음 
+
+        if (GameManager.instance.health < 0) // 사망 조건 : 생명력이 0보다 작으면
+        {
+            for (int index = 2; index < transform.childCount; index++) // Shadow, Area 제외 비활성화 
+            {
+                transform.GetChild(index).gameObject.SetActive(false);
+            }
+            
+            anim.SetTrigger("Dead"); // 죽음 애니메이션 실행
+        }
+    }
 }
