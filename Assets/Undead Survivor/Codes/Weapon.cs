@@ -50,7 +50,8 @@ public class Weapon : MonoBehaviour
 
     public void LevelUp(float damage, int count) // 레벨업 기능
     {
-        this.damage = damage;
+        // this.damage = damage;
+        this.damage = damage + Character.Damage;
         this.count += count;
         
         if (id == 0)
@@ -68,8 +69,10 @@ public class Weapon : MonoBehaviour
         
         // Property Set (각종 무기 속성 변수 : 스크립터블 오브젝트 데이터로 초기화)
         id = data.itemId;
-        damage = data.baseDamage;
-        count = data.baseCount;
+        // damage = data.baseDamage;
+        damage = data.baseDamage * Character.Damage;
+        // count = data.baseCount;
+        count = data.baseCount + Character.Count;
 
         // 데이터 : 프리팹(인덱스 x) -> prefabId : 풀링 매니저 변수에서 찾아서 초기화
         for (int index = 0; index < GameManager.instance.pool.prefabs.Length; index++)
@@ -83,12 +86,14 @@ public class Weapon : MonoBehaviour
         
         switch (id) 
         {
-            case 0:
-                speed = 150; // - : 반시계 방향
+            case 0: // 근거리 무기 
+                // speed = 150; // - : 반시계 방향
+                speed = 150 * Character.WeaponSpeed; 
                 Batch(); 
                 break;
-            default:
-                speed = 0.3f; // 연사 속도 (적을 수록 많이 발사)
+            default: // 원거리 무기 
+                // speed = 0.3f; // 연사 속도 (적을 수록 많이 발사)
+                speed = 0.5f * Character.WeaponRate; 
                 break;
         }
         
