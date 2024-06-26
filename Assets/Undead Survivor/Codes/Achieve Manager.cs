@@ -25,14 +25,9 @@ public class AchieveManager : MonoBehaviour
     {
         PlayerPrefs.SetInt("MyData", 1); // 저장 : key와 연결된 int형 데이터 저장
 
-        foreach (var achieve in achieves)
+        foreach (Achieve achieve in achieves)
         {
-            PlayerPrefs.SetInt(achieve.ToString(), 1);
-            
-            /*
-            PlayerPrefs.SetInt("unlockPotato", 0); // 저장
-            PlayerPrefs.SetInt("unlockBean", 0); // 저장
-            */
+            PlayerPrefs.SetInt(achieve.ToString(), 0);
         }
     }
 
@@ -49,6 +44,38 @@ public class AchieveManager : MonoBehaviour
             bool isUnlock = PlayerPrefs.GetInt(acheiveName) == 1; // 저장된 업적 상태 가져와서, 버튼 활성화에 적용 
             lockCharacter[index].SetActive(!isUnlock);
             unlockCharacter[index].SetActive(isUnlock);
+        }
+    }
+
+    private void LateUpdate() // 모든 업적 확인을 위한 반복문 
+    {
+        foreach (Achieve achieve in achieves)
+        {
+            CheckAchieve(achieve);
+        }
+    }
+
+    void CheckAchieve(Achieve achieve) // 업적 달성 
+    {
+        bool isAchieve = false;
+
+        switch (achieve) // 각 업적 달성 조건 
+        {
+            case Achieve.unlockPotato:
+                // if (GameManager.instance.isLive) // 게임 성공 시 자동으로 달성 방지 
+                {
+                    isAchieve = GameManager.instance.kill >= 10;
+                }
+                break;
+            case Achieve.unlockBean:
+                isAchieve = GameManager.instance.gameTime == GameManager.instance.maxGameTime; // 이걸론 왜 안 되지...? 일단 넘어가기 
+                // isAchieve = GameManager.instance.kill >= 20;
+                break;
+        }
+
+        if (isAchieve && PlayerPrefs.GetInt(achieve.ToString()) == 0) // 해당 업적이 처음 달성됨 
+        {
+            PlayerPrefs.SetInt(achieve.ToString(), 1);
         }
     }
 }
