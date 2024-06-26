@@ -7,14 +7,17 @@ public class AchieveManager : MonoBehaviour
 {
     public GameObject[] lockCharacter;
     public GameObject[] unlockCharacter;
+    public GameObject uiNotice;
     
     enum Achieve { unlockPotato, unlockBean }
     private Achieve[] achieves;
+    private WaitForSecondsRealtime wait; // 멈추지 않는 시간 
 
     private void Awake()
     {
         achieves = (Achieve[])Enum.GetValues(typeof(Achieve)); // 주어진 열거형의 데이터 모두 가져옴 
-
+        wait = new WaitForSecondsRealtime(5);
+        
         if (!PlayerPrefs.HasKey("MyData")) // 데이터 유무 체크 
         {
             Init();
@@ -68,14 +71,31 @@ public class AchieveManager : MonoBehaviour
                 }
                 break;
             case Achieve.unlockBean:
-                isAchieve = GameManager.instance.gameTime == GameManager.instance.maxGameTime; // 이걸론 왜 안 되지...? 일단 넘어가기 
-                // isAchieve = GameManager.instance.kill >= 20;
+                isAchieve = GameManager.instance.gameTime == GameManager.instance.maxGameTime; 
                 break;
         }
 
         if (isAchieve && PlayerPrefs.GetInt(achieve.ToString()) == 0) // 해당 업적이 처음 달성됨 
         {
             PlayerPrefs.SetInt(achieve.ToString(), 1);
+
+            for (int index = 0; index < uiNotice.transform.childCount; index++) // 알림 창의 자식 오브젝트 순회하면서,
+            {
+                bool isActive = index == (int)achieve;
+                uiNotice.transform.GetChild(index).gameObject.SetActive(isActive); // 순번이 맞으면 활성화 
+            }
+            
+            StartCoroutine(NoticeRoutine());
         }
+    }
+
+    IEnumerator NoticeRoutine()
+    {
+        uiNotice.SetActive(true);
+        
+        // yield return new WaitForSeconds(5);
+        yield return wait; // 5초가 지난 뒤, 비활성화
+        
+        uiNotice.SetActive(false);
     }
 }

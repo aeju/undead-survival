@@ -33,15 +33,13 @@ public class GameManager : MonoBehaviour
     {
         instance = this; // 자기자신 집어 넣음
     }
-
-    // public void GameStart() // 게임 시작 버튼에 연결
+    
     public void GameStart(int id) // 게임 시작 버튼에 연결
     {
         playerId = id;
         health = maxHealth;
         
         player.gameObject.SetActive(true); // 플레이어 게임 오브젝트 활성화 
-        // uiLevelUp.Select(0); // 임시 스크립트 (첫번째 캐릭터 선택)
         uiLevelUp.Select(playerId % 2); 
         Resume(); 
     }
@@ -57,7 +55,6 @@ public class GameManager : MonoBehaviour
         
         yield return new WaitForSeconds(0.5f); // 딜레이 필요 (플레이어 - 죽음 애니메이션)
         
-        // uiResult.SetActive(true);
         uiResult.gameObject.SetActive(true);
         uiResult.Lose();
         Stop();
@@ -75,7 +72,6 @@ public class GameManager : MonoBehaviour
         
         yield return new WaitForSeconds(0.5f); // 딜레이 필요 (몬스터 - 죽음 애니메이션)
         
-        // uiResult.SetActive(true);
         uiResult.gameObject.SetActive(true);
         uiResult.Win();
         Stop();
@@ -95,7 +91,8 @@ public class GameManager : MonoBehaviour
 
         if (gameTime > maxGameTime)
         {
-            gameTime = 0;
+            // gameTime = 0; 콩농부 해금 x 
+            gameTime = maxGameTime;
             GameVictory(); // 승리 : 게임 시간이 최대 시간 넘기는 때 
         }
     }

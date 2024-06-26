@@ -19,8 +19,6 @@ public class PoolManager : MonoBehaviour
         {
             pools[index] = new List<GameObject>();
         }
-        
-        Debug.Log(pools.Length);
     }
 
     // 게임 오브젝트를 반환하는 함수 선언
