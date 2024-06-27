@@ -67,11 +67,9 @@ public class Weapon : MonoBehaviour
         transform.parent = player.transform; // 부모 오브젝트 : 플레이어로 지정
         transform.localPosition = Vector3.zero; // local Position(지역 위치) : 원점 
         
-        // Property Set (각종 무기 속성 변수 : 스크립터블 오브젝트 데이터로 초기화)
+        // Property Set (각종 무기 속성 변수 : 스크립터블 오브젝트 데이터로 초기화), 캐릭터 특성 반영 
         id = data.itemId;
-        // damage = data.baseDamage;
         damage = data.baseDamage * Character.Damage;
-        // count = data.baseCount;
         count = data.baseCount + Character.Count;
 
         // 데이터 : 프리팹(인덱스 x) -> prefabId : 풀링 매니저 변수에서 찾아서 초기화
@@ -92,8 +90,7 @@ public class Weapon : MonoBehaviour
                 Batch(); 
                 break;
             default: // 원거리 무기 
-                // speed = 0.3f; // 연사 속도 (적을 수록 많이 발사)
-                speed = 0.5f * Character.WeaponRate; 
+                speed = 0.5f * Character.WeaponRate; // 연사 속도 (적을수록 많이 발사)
                 break;
         }
         
@@ -128,8 +125,7 @@ public class Weapon : MonoBehaviour
             Vector3 rotVec = Vector3.forward * 360 * index / count; // z축 방향 
             bullet.Rotate(rotVec); // 계산된 각도 적용 (회전)
             bullet.Translate(bullet.up * 1.5f, Space.World); // 자신의 위쪽으로 이동, 이동 방향 : Space.World 기준
-            
-            bullet.GetComponent<Bullet>().Init(damage, -1, Vector3.zero); // 근접 공격에 사용했던 초기화 함수 호출 수정 
+            bullet.GetComponent<Bullet>().Init(damage, -100, Vector3.zero); // -100 is Infinity Per.
         }
     }
  
