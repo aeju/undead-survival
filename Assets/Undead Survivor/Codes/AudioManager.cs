@@ -12,20 +12,21 @@ public class AudioManager : MonoBehaviour
     [Header("# BGM")] // 배경음
     public AudioClip bgmClip; // 클립
     public float bgmVolume; // 볼륨
-    public AudioSource bgmPlayer; // 오디오 소스
+    private AudioSource bgmPlayer; // 오디오 소스
+    private AudioHighPassFilter bgmEffect;
     
     [Header("# SFX")] // 효과음 
     public AudioClip[] sfxClips;  // 클립
     public float sfxVolume; // 볼륨
     public int channels; // 채널 : 다량의 효과음 낼 수 있도록 
-    public AudioSource[] sfxPlayers; // 오디오 소스
+    private AudioSource[] sfxPlayers; // 오디오 소스
     private int channelIndex;
     
     private void Awake()
     {
         instance = this;
         Init();
-    }
+    } 
     
     public enum Sfx { Dead, Hit, LevelUp = 3, Lose, Melee, Range = 7, Select, Win } // 문자열 대신, enum -> 오타없이 o
 
@@ -39,6 +40,7 @@ public class AudioManager : MonoBehaviour
         bgmPlayer.loop = true;
         bgmPlayer.volume = bgmVolume;
         bgmPlayer.clip = bgmClip;
+        bgmEffect = Camera.main.GetComponent<AudioHighPassFilter>();
 
         // 효과음 플레이어 초기화 
         GameObject sfxObject = new GameObject("SfxPlayer"); // 효과음 담당 자식 오브젝트 생성 
@@ -49,10 +51,28 @@ public class AudioManager : MonoBehaviour
         {
             sfxPlayers[index] = sfxObject.AddComponent<AudioSource>();
             sfxPlayers[index].playOnAwake = false;
+            sfxPlayers[index].bypassListenerEffects = true;
             sfxPlayers[index].volume = sfxVolume;
         }
     }
 
+    public void PlayBgm(bool isPlay) // 배경음 재생 함수 
+    {
+        if (isPlay)
+        {
+            bgmPlayer.Play();
+        }
+        else
+        {
+            bgmPlayer.Stop();
+        }
+    }
+    
+    public void EffectBgm(bool isPlay) // 필터 켜고 끄는 함수  
+    {
+        bgmEffect.enabled = isPlay;
+    }
+    
     public void PlaySfx(Sfx sfx) // 효과음 재생 함수
     {
         for (int index = 0; index < sfxPlayers.Length; index++) // 채널 개수(채널인덱스 변수)만큼 순회하도록
