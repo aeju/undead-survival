@@ -56,10 +56,19 @@ public class Reposition : MonoBehaviour
                 break;
             case "Enemy":
                 if (coll.enabled) // 콜라이더가 활성화 되어있는지 (살아있을 때만)
-                { 
-                    // 플레이어의 이동 방향에 따라 맞은 편에서 등장하도록 이동 (카메라가 안 보이는 먼 곳에서 이동시키기 -> 한 맵의 크기만큼) 
-                    transform.Translate(playrDir * 20 
+                {
+                    /*
+                    // 플레이어의 이동 방향에 따라 맞은 편에서 등장하도록 이동 (카메라가 안 보이는 먼 곳에서 이동시키기 -> 한 맵의 크기만큼)
+                    transform.Translate(playrDir * 20
                                         + new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0f)); // 랜덤한 위치에서 등장하도록 벡터 더하기
+                    */
+                    
+                    // 두 오브젝트 거리(플레이어 - 몬스터) 그대로 활용
+                    Vector3 dist = playerPos - myPos;
+                    
+                    Vector3 ran = new Vector3(Random.Range(-3, 3), Random.Range(-3, 3), 0); // 랜덤 벡터 더하여 퍼져있는 몬스터 재배치 만들기 
+                    // transform.Translate(dist);
+                    transform.Translate(ran + dist * 2); // 이동 거리만큼 한 번 더 가면 = 플레이어 앞 쪽으로 미리 간 느낌 
                 }
                 break;
         }
