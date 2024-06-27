@@ -92,6 +92,7 @@ public class AchieveManager : MonoBehaviour
     IEnumerator NoticeRoutine()
     {
         uiNotice.SetActive(true);
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.LevelUp);
         
         // yield return new WaitForSeconds(5);
         yield return wait; // 5초가 지난 뒤, 비활성화

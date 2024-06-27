@@ -19,12 +19,14 @@ public class LevelUp : MonoBehaviour
         Next();
         rect.localScale = Vector3.one;
         GameManager.instance.Stop(); // 레벨업 창 나타날 때 : 멈추기
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.LevelUp);
     }
     
     public void Hide() // 숨기기 : 아이템 버튼 클릭 
     {
         rect.localScale = Vector3.zero;
         GameManager.instance.Resume(); // 레벨업 창 사라질 때 : 멈추기
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
     }
 
     public void Select(int index)

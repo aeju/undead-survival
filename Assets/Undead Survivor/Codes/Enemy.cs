@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem.Processors;
 
 public class Enemy : MonoBehaviour
 {
@@ -94,6 +93,7 @@ public class Enemy : MonoBehaviour
         if (health > 0) // 피격
         {
             anim.SetTrigger("Hit");
+            AudioManager.instance.PlaySfx(AudioManager.Sfx.Hit);
         }
         else // 사망
         {
@@ -104,7 +104,9 @@ public class Enemy : MonoBehaviour
             anim.SetBool("Dead", true);
             GameManager.instance.kill++; // 킬수 증가
             GameManager.instance.GetExp(); // 경험치 함수 호출
-            // Dead(); 애니메이션 이벤트에서 실행      
+            
+            if (GameManager.instance.isLive) // 게임 종료 : 사운드 x 
+                AudioManager.instance.PlaySfx(AudioManager.Sfx.Dead); // if문 안쪽 로직이 한 줄이라면, 중괄호 생략 가능 
         }
     }
 

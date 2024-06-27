@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using Random = UnityEngine.Random;
 
 public class AudioManager : MonoBehaviour
 {
@@ -25,6 +26,8 @@ public class AudioManager : MonoBehaviour
         instance = this;
         Init();
     }
+    
+    public enum Sfx { Dead, Hit, LevelUp = 3, Lose, Melee, Range = 7, Select, Win } // 문자열 대신, enum -> 오타없이 o
 
     void Init()
     {
@@ -47,6 +50,30 @@ public class AudioManager : MonoBehaviour
             sfxPlayers[index] = sfxObject.AddComponent<AudioSource>();
             sfxPlayers[index].playOnAwake = false;
             sfxPlayers[index].volume = sfxVolume;
+        }
+    }
+
+    public void PlaySfx(Sfx sfx) // 효과음 재생 함수
+    {
+        for (int index = 0; index < sfxPlayers.Length; index++) // 채널 개수(채널인덱스 변수)만큼 순회하도록
+        {
+            int loopIndex = (index + channelIndex) % sfxPlayers.Length; // sfxPlayer.Length값 넘어가지 않도록 -> 나눠줌 
+            
+            if (sfxPlayers[loopIndex].isPlaying) // 재생하고 있는 효과음이 있다면 -> 건너뜀 (그냥 재생되도록)
+                continue; // 반복문 도중 다음 루프로 건너뛰는 키워드 
+
+            // 효과음이 2개 이상인 것 : 랜덤 인덱스 더하기
+            int ranIndex = 0;
+            if (sfx == Sfx.Hit || sfx == Sfx.Melee) // 2개, 3개라면 -> switch 
+            {
+                ranIndex = Random.Range(0, 2);
+            }
+            
+            channelIndex = loopIndex;
+            sfxPlayers[0].clip = sfxClips[(int)sfx]; // 오디오 소스 클립 변경
+            sfxPlayers[0].Play(); // Play 함수 호출 
+            
+            break; // 반복문 종료 (똑같은 클립 재생시킬 수 있는 문제)
         }
     }
 }

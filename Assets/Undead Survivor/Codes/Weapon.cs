@@ -147,5 +147,7 @@ public class Weapon : MonoBehaviour
         bullet.position = transform.position; // 위치 : 플레이어 위치
         bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir); // 회전 (FromToRotation : 지정된 축을 중심으로 목표를 향해 회전)
         bullet.GetComponent<Bullet>().Init(damage, count, dir); // 원거리 공격 초기화 함수 호출 (관통력, dir)
+        
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
     }
 }
