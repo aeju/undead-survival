@@ -7694,6 +7694,7 @@ MonoBehaviour:
     spriteType: 1
     health: 15
     speed: 2.4
+  levelTime: 0
 --- !u!1 &614641747
 GameObject:
   m_ObjectHideFlags: 0
@@ -8106,6 +8107,7 @@ GameObject:
   - component: {fileID: 636680115}
   - component: {fileID: 636680114}
   - component: {fileID: 636680116}
+  - component: {fileID: 636680117}
   m_Layer: 0
   m_Name: EnemyCleaner
   m_TagString: Bullet
@@ -8187,6 +8189,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 10000000
   per: -1
+--- !u!50 &636680117
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 636680113}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &636977217
 GameObject:
   m_ObjectHideFlags: 0
@@ -8662,14 +8691,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isLive: 0
   gameTime: 0
-  maxGameTime: 20
+  maxGameTime: 300
   playerId: 0
   health: 0
   maxHealth: 100
   level: 0
   kill: 0
   exp: 0
-  nextExp: 0100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c000000
+  nextExp: 03000000050000000a0000006400000096000000d20000001801000068010000c201000058020000
   pool: {fileID: 703131662}
   player: {fileID: 543386295}
   uiLevelUp: {fileID: 2139116926}

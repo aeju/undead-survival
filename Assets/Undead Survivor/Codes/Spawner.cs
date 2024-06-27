@@ -6,6 +6,7 @@ public class Spawner : MonoBehaviour
 {
     public Transform[] spawnPoint;
     public SpawnData[] SpawnData;
+    public float levelTime;
     
     private int level; // 레벨 
     private float timer;
@@ -13,6 +14,7 @@ public class Spawner : MonoBehaviour
     void Awake()
     {
         spawnPoint = GetComponentsInChildren<Transform>(); // GetComponentsInChildern : 자기 자신(Spawner 오브젝트)도 포함 -> 가장 아래 Random.Range에서 0대신 1!
+        levelTime = GameManager.instance.maxGameTime / SpawnData.Length;
     }
     
     void Update()
