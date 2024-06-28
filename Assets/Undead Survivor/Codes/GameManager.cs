@@ -91,6 +91,11 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(0);
     }
+    
+    public void GameQuit() // 게임 종료 (종료 버튼) 
+    {
+        Application.Quit(); // 빌드 버전에서만 작동 
+    }
 
     void Update()
     {
