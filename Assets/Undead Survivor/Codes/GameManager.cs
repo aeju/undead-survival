@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         instance = this; // 자기자신 집어 넣음
+        Application.targetFrameRate = 60;
     }
     
     public void GameStart(int id) // 게임 시작 버튼에 연결
