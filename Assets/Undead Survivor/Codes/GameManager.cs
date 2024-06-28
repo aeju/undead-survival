@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     public Player player;
     public LevelUp uiLevelUp;
     public Result uiResult;
+    public Transform uiJoy; // 조이스틱
     public GameObject enemyCleaner;
     
     void Awake()
@@ -127,11 +128,13 @@ public class GameManager : MonoBehaviour
     {
         isLive = false;
         Time.timeScale = 0; // 시간속도, 멈춤
+        uiJoy.localScale = Vector3.zero;
     }
     
     public void Resume() // 작동 
     {
         isLive = true;
         Time.timeScale = 1; // 재생 
+        uiJoy.localScale = Vector3.one;
     }
 }
